@@ -9,8 +9,7 @@ const generateToken = (id) => {
   });
 };
 
-// @desc    Register new user
-// @route   POST /api/auth/signup
+//sign up
 exports.signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -49,8 +48,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
+//login
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
