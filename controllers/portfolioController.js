@@ -17,7 +17,8 @@ exports.createPortfolio = async (req, res) => {
 // Get all portfolios for logged-in user
 exports.getPortfolios = async (req, res) => {
   try {
-    const portfolios = await Portfolio.find({ user: req.user.id });
+    const userId = req.query.user || req.user?.id; 
+    const portfolios = await Portfolio.find({ user: userId });
     res.json(portfolios);
   } catch (error) {
     res.status(500).json({ message: error.message });
