@@ -1,7 +1,7 @@
 const Asset = require("../models/Asset");
 const Portfolio = require("../models/Portfolio");
 
-// Add asset to a portfolio
+// ✅ Add asset to a portfolio
 exports.addAsset = async (req, res) => {
   try {
     const { portfolioId, type, name, quantity, purchasePrice, currentPrice } = req.body;
@@ -35,12 +35,11 @@ exports.addAsset = async (req, res) => {
   }
 };
 
-// Get assets by portfolio
+// ✅ Get assets by portfolio
 exports.getAssetsByPortfolio = async (req, res) => {
   try {
     const { portfolioId } = req.params;
 
-    // Check if portfolio exists
     const portfolio = await Portfolio.findById(portfolioId);
     if (!portfolio) {
       return res.status(404).json({ message: "Portfolio not found" });
@@ -51,6 +50,46 @@ exports.getAssetsByPortfolio = async (req, res) => {
       message: "Assets fetched successfully",
       assets
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ✅ Update asset
+exports.updateAsset = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const asset = await Asset.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!asset) {
+      return res.status(404).json({ message: "Asset not found" });
+    }
+
+    res.json({
+      message: "Asset updated successfully",
+      asset,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ✅ Delete asset
+exports.deleteAsset = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const asset = await Asset.findByIdAndDelete(id);
+
+    if (!asset) {
+      return res.status(404).json({ message: "Asset not found" });
+    }
+
+    res.json({ message: "Asset deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
