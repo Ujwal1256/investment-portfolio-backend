@@ -4,21 +4,21 @@ const Portfolio = require("../models/Portfolio");
 // ✅ Add asset to a portfolio
 exports.addAsset = async (req, res) => {
   try {
-    const { portfolioId, type, name, quantity, purchasePrice, currentPrice } = req.body;
+    const { portfolio, type, name, quantity, purchasePrice, currentPrice } = req.body;
 
     // Check if portfolio exists
-    const portfolio = await Portfolio.findById(portfolioId);
-    if (!portfolio) {
+    const selectedPortfolio = await Portfolio.findById(portfolio);
+    if (!selectedPortfolio) {
       return res.status(404).json({ message: "Portfolio not found" });
     }
 
-    const existingAsset = await Asset.findOne({ portfolio: portfolioId, name });
+    const existingAsset = await Asset.findOne({ portfolio: selectedPortfolio._id, name });
     if (existingAsset) {
       return res.status(400).json({ message: "Asset already exists in this portfolio" });
     }
 
     const asset = await Asset.create({
-      portfolio: portfolioId,
+      portfolio: selectedPortfolio._id,
       type,
       name,
       quantity,
