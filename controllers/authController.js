@@ -71,23 +71,27 @@ exports.login = async (req, res) => {
     }
 
     // Send response with token
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
+   res.json({
+  user: {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+  },
+  token: generateToken(user._id),
+});
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 // @desc    Get logged in user
-// @route   GET /api/auth/me
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    res.json(user);
+    res.json({
+      _id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
