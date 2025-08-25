@@ -59,7 +59,8 @@ exports.getAssetsByPortfolio = async (req, res) => {
 exports.updateAsset = async (req, res) => {
   try {
     const { id } = req.params;
-
+    console.log(req.body);
+    console.log(id);
     const asset = await Asset.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
